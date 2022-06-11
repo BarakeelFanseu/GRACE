@@ -26,4 +26,12 @@ python GRACE.py --kwargs
 
 9) python GRACE.py --graph_type 'Undirected' --dataset pubmed --data_type cocitation --tol 0.0 --normalize l1 --alpha 0.5 --num_runs 2
 
-10) 
+10) python GRACE.py --graph_type 'Directed' --dataset cora_ml --data_type cocitation --tol 0.0 --normalize None --alpha 0.1 --num_runs 2
+
+12) python GRACE.py --graph_type 'Directed' --dataset citeseer --data_type cocitation --tol 0.15 --normalize None --alpha 0.5 --num_runs 2
+
+13) python GRACE.py --graph_type 'Heterogeneous' --dataset acm --data_type cocitation --tol 0.0 --normalize l2 --beta 0.7 0.3 --alpha 0.1 --num_runs 2
+
+14) python GRACE.py --graph_type 'Heterogeneous' --dataset dblp --data_type cocitation --tol 0.0 --normalize l2 --beta 0.3 0.3 0.3 --alpha 0.1 --num_runs 2
+
+15) python GRACE.py --graph_type 'Heterogeneous' --dataset imdb --data_type cocitation --tol 0.0 --normalize l2 --beta 0.5 0.5 --alpha 0.1 --num_runs 2
