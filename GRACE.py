@@ -169,8 +169,8 @@ def get_norm_adj_all(list_of_adj, type='sym', loop=True):
 
 def Incidence_mat(features, Hypergraphs):
     print("creating incidence matrix")
-    Incidence = np.zeros(shape=(features.shape[0], len(Hypergraph)))
-    for edgei, (k, v) in enumerate(Hypergraph.items()):
+    Incidence = np.zeros(shape=(features.shape[0], len(Hypergraphs)))
+    for edgei, (k, v) in enumerate(Hypergraphs.items()):
         for i in v:
             Incidence[i][edgei] = 1
     return Incidence
@@ -263,13 +263,13 @@ def load_npz_dataset(file_name):
 def load_simple(type=args.graph_type, dataset=args.dataset):
     path_directed = 'data/directed/'
     path_undirected = 'data/undirected/'
-    if type=='undirected':
+    if type=='Undirected':
         print('===== loading undirected =====')
-        sio.loadmat('{}{}.mat'.format(path_undirected, dataset))
+        data = sio.loadmat('{}{}.mat'.format(path_undirected, dataset))
 
-    elif type=='directed':
+    elif type=='Directed':
         print('===== loading directed =====')
-        load_npz_dataset('{}{}.npz'.format(path_directed, dataset))
+        data = load_npz_dataset('{}{}.npz'.format(path_directed, dataset))
 
     feature = data['fea']
     if sp.issparse(feature):
@@ -277,7 +277,7 @@ def load_simple(type=args.graph_type, dataset=args.dataset):
 
     adj = data['W']
     labels = data['gnd']
-    if args.type == 'undirected':
+    if type == 'Undirected':
         labels = labels.T
         labels = labels - 1
         labels = labels[0, :]
@@ -538,7 +538,7 @@ if __name__ == '__main__':
             if args.graph_type == 'Hypergraph':
                 print('dataset: {}_{}, power: {}, ac: {}, f1: {}, nm: {}, intraD: {}, InterD: {}, pre: {}, rec: {}, adj_score: {}'.format(args.dataset, args.data_type, p, acc_means, f1_means, nmi_means, intramean, intermean, pre_mean, rec_mean, adj_smean))
             else:
-                print('dataset: {}, power: {}, ac: {}, f1: {}, nm: {}, intraD: {}, InterD: {}, pre: {}, rec: {}, adj_score: {}'.format(args.dataset, args.graph_type, p, acc_means, f1_means, nmi_means, intramean, intermean, pre_mean, rec_mean, adj_smean))
+                print('dataset: {}_{}, power: {}, ac: {}, f1: {}, nm: {}, intraD: {}, InterD: {}, pre: {}, rec: {}, adj_score: {}'.format(args.dataset, args.graph_type, p, acc_means, f1_means, nmi_means, intramean, intermean, pre_mean, rec_mean, adj_smean))
 
 
 
