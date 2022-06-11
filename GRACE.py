@@ -18,19 +18,19 @@ import random
 
 p = argparse.ArgumentParser(description='Choose Parameter for Filter interpolation')
 p.add_argument('--data_type', type=str, default='coauthorship', help='data name (coauthorship/cocitation)')
-p.add_argument('--dataset', type=str, default='dblp', help='dataset name '
+p.add_argument('--dataset', type=str, default='acm', help='dataset name '
                '(e.g.: cora/dblp/acm for coauthorship, cora/citeseer/pubmed for cocitation)')
-p.add_argument('--graph_type', type=str, default='Hypergraph', help='graph type '
+p.add_argument('--graph_type', type=str, default='Heterogeneous', help='graph type '
                 '(e.g.: Hypergraph, Heterogeneous, Multi-relational, Undirected, Directed)')
-p.add_argument('--tol', type=float, default=.5, help='tolerance')
-p.add_argument('--power', type=int, default=100, help='order-k')
+p.add_argument('--tol', type=float, default=.0, help='tolerance')
+p.add_argument('--power', type=int, default=40, help='order-k')
 p.add_argument('--gpu', type=int, default=None, help='gpu number to use')
 p.add_argument('--cuda', type=bool, default=False, help='cuda for gpu')
 p.add_argument('--seeds', type=int, default=0, help='seed for randomness')
 p.add_argument('--mediators', type=int, default=1, help='use Mediators for Laplacian from FastGCN')
-p.add_argument('--normalize', type=str, default=None, help='Use l2 or l1 norm or None')
-p.add_argument('--alpha', type=float, default=0.5, help='balance parameter')
-p.add_argument('--beta', nargs='+', default=[0.5, 0.5, 0.3], help='laplacian weights')
+p.add_argument('--normalize', type=str, default='l2', help='Use l2 or l1 norm or None')
+p.add_argument('--alpha', type=float, default=0.1, help='balance parameter')
+p.add_argument('--beta', nargs='+', default=[0.7, 0.3, 0.3],  action='append', help='laplacian weights')
 # for beta, acm alpha 0.7*PAP 0.3*PLP [0.7,0.3]  # imdb [0.5,0.5] #dblp [0.3,0.3,0.3]
 p.add_argument('--num_runs', type=int, default=1, help='num_runs')
 p.add_argument('--loop', type=bool, default=True, help='num_runs')
@@ -178,8 +178,11 @@ def Incidence_mat(features, Hypergraphs):
 
 def Build_filters(grap_num_nodes, graph_Structure, graph_features, mediators=args.mediators,
                   alpha=args.alpha, graph_type=args.graph_type, beta=args.beta, type=args.lap_type,
-                  loops=args.loop
+                  loops=args.loop, seed = args.seeds
                   ):
+
+    np.random.seed(seed)
+    random.seed(seed)
 
     if graph_type == 'Hypergraph':
         graph_filter = Laplacian(grap_num_nodes, graph_Structure, graph_features, mediators)
@@ -314,7 +317,7 @@ def load_acm():
 
     gt = np.array(gt)
 
-    return list_of_adj, feature
+    return list_of_adj, feature, gt
 
 
 def load_imdb():
@@ -424,9 +427,11 @@ if __name__ == '__main__':
 
         k = len(np.unique(labels))
         if args.graph_type == 'Hypergraph':
+            print(f'---------------- {args.dataset}_{args.data_type} loaded ----------------')
             alpha = args.alpha
 
-        print('---------------- data loaded ----------------')
+        else:
+            print(f'---------------- {args.dataset}_{args.graph_type} loaded ----------------')
         print(f'number of nodes: {num_nodes}')
         print(f'number distinct labels: {k}')
         print(f'number of user specified clusters: {k}')
@@ -434,7 +439,7 @@ if __name__ == '__main__':
 
         adj_normalized = Build_filters(num_nodes, structure, features, mediators=args.mediators,
                                        alpha=args.alpha, graph_type=args.graph_type, beta=args.beta, type=args.lap_type,
-                                       loops=args.loop)
+                                       loops=args.loop, seed=args.seeds)
 
         max_count = args.max_tol_count
 
