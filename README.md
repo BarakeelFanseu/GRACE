@@ -35,3 +35,21 @@ python GRACE.py --kwargs
 14) python GRACE.py --graph_type 'Heterogeneous' --dataset dblp --data_type cocitation --tol 0.0 --normalize l2 --beta 0.3 0.3 0.3 --alpha 0.1 --num_runs 2
 
 15) python GRACE.py --graph_type 'Heterogeneous' --dataset imdb --data_type cocitation --tol 0.0 --normalize l2 --beta 0.5 0.5 --alpha 0.1 --num_runs 2
+
+# Please cite our work
+
+@article{10.1145/3544977,
+author = {Kamhoua, Barakeel Fanseu and Zhang, Lin and Ma, Kaili and Cheng, James and Li, Bo and Han, Bo},
+title = {GRACE: A General Graph Convolution Framework for Attributed Graph Clustering},
+year = {2022},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+issn = {1556-4681},
+url = {https://doi.org/10.1145/3544977},
+doi = {10.1145/3544977},
+note = {Just Accepted},
+journal = {ACM Trans. Knowl. Discov. Data},
+month = {jun},
+keywords = {Attributed graph clustering; Graph convolution}
+}
+
